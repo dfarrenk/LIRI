@@ -1,3 +1,4 @@
+runTime();
 var key = require("./keys.js");
 // console.log(key);
 
@@ -6,29 +7,29 @@ var key = require("./keys.js");
 //     console.log(element);
 // });
 //
-switch (process.argv[2]) {
-    case 'my-tweets':
-        myTweets();
-        break;
-    case 'spotify-this-song':
-        spotifyThisSong();
-        //TODO
-        break;
-    case 'movie-this':
-        movieThis();
-        break;
-    case 'do-what-it-says':
-        console.log('* do-what-it-says');
-        //TODO
-        break;
-    default:
-        console.log('Commands:');
-        console.log('my-tweets');
-        console.log('spotify-this-song');
-        console.log('movie-this');
-        console.log('do-what-it-says');
-}
 
+function runTime() {
+    switch (process.argv[2]) {
+        case 'my-tweets':
+            myTweets();
+            break;
+        case 'spotify-this-song':
+            spotifyThisSong();
+            break;
+        case 'movie-this':
+            movieThis();
+            break;
+        case 'do-what-it-says':
+            doWhatItSays();
+            break;
+        default:
+            console.log('Commands:');
+            console.log('my-tweets');
+            console.log('spotify-this-song');
+            console.log('movie-this');
+            console.log('do-what-it-says');
+    }
+}
 // Display Tweets
 function myTweets() {
     var songName = process.argv[3];
@@ -43,11 +44,43 @@ function myTweets() {
     // The song’s name
     // A preview link of the song from Spotify
     // The album that the song is from
+
+
 }
 
 // Fetch a spotify song
 function spotifyThisSong() {
+    var Spotify = require('node-spotify-api');
 
+    var spotify = new Spotify({
+        id: '7ee1079a57994de6beeac80fb83495d9',
+        secret: 'f9e7f3bfb2e248779c33a726961b8ea4'
+    });
+
+    var songName = process.argv[3];
+    if (!process.argv[3]) {
+        songName = "The Sign artist:Ace of Base";
+    }
+
+
+    spotify.search({ type: 'track', query: songName }, function(err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+
+        //        console.log(data);
+        //console.log(JSON.stringify(data.tracks.items[0], null, 4));
+
+        var artists = [];
+        for (let i in data.tracks.items[0].artists) {
+            artists.push(data.tracks.items[0].artists[i].name);
+        }
+
+        console.log("Artist(s): " + artists.join(", "));
+        console.log("Song Name: " + data.tracks.items[0].name);
+        console.log("Preview Link: " + data.tracks.items[0].preview_url);
+        console.log("From Album: " + data.tracks.items[0].album.name);
+    });
 }
 
 //Fetch movie information from IMDB
@@ -83,4 +116,32 @@ function movieThis() {
             console.log("Actors: " + JSON.parse(body).Actors);
         }
     });
+}
+
+function doWhatItSays() {
+    var fs = require("fs");
+    fs.readFile("random.txt", "utf8", function(error, data) {
+
+        // If the code experiences any errors it will log the error to the console.
+        if (error) {
+            return console.log(error);
+        }
+
+        // We will then print the contents of data
+        // console.log(data);
+
+        // Then split it by commas (to make it more readable)
+        var dataArr = data.split(",");
+
+        // We will then re-display the content as an array for later use.
+        // console.log(dataArr);
+
+        // Modify the commands to those in the text file.
+        for (let i = 0; i < dataArr.length; i++) {
+            process.argv[i + 2] = dataArr[i];
+        }
+
+        runTime();
+    });
+
 }
