@@ -8,16 +8,13 @@ var key = require("./keys.js");
 //
 switch (process.argv[2]) {
     case 'my-tweets':
-        console.log('* my-tweets');
-        //TODO
+        myTweets();
         break;
     case 'spotify-this-song':
-        console.log('* spotify-this-song');
+        spotifyThisSong();
         //TODO
         break;
     case 'movie-this':
-        console.log('* movie-this');
-        //TODO
         movieThis();
         break;
     case 'do-what-it-says':
@@ -32,6 +29,26 @@ switch (process.argv[2]) {
         console.log('do-what-it-says');
 }
 
+// Display Tweets
+function myTweets() {
+    var songName = process.argv[3];
+    if (!process.argv[3]) {
+        songName = "The Sign";
+    }
+
+    songName = songName.replace(/ /g, "+");
+
+    //     This will show the following information about the song in your terminal/bash window
+    // Artist(s)
+    // The song’s name
+    // A preview link of the song from Spotify
+    // The album that the song is from
+}
+
+// Fetch a spotify song
+function spotifyThisSong() {
+
+}
 
 //Fetch movie information from IMDB
 function movieThis() {

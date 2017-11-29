@@ -1,0 +1,25 @@
+{
+  "name": "liri",
+  "version": "1.0.0",
+  "description": "",
+  "main": "liri.js",
+  "dependencies": {
+    "node-spotify-api": "^1.0.7",
+    "request": "^2.83.0",
+    "spotify": "^0.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node liri.js movie-this"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfarrenk/LIRI.git"
+  },
+  "author": "David Farrenkopf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dfarrenk/LIRI/issues"
+  },
+  "homepage": "https://github.com/dfarrenk/LIRI#readme"
+}
