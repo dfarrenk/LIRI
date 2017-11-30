@@ -1,12 +1,4 @@
-runTime();
 var key = require("./keys.js");
-// console.log(key);
-
-
-// process.argv.forEach(function(element) {
-//     console.log(element);
-// });
-//
 
 function runTime() {
     switch (process.argv[2]) {
@@ -32,20 +24,21 @@ function runTime() {
 }
 // Display Tweets
 function myTweets() {
-    var songName = process.argv[3];
-    if (!process.argv[3]) {
-        songName = "The Sign";
-    }
-
-    songName = songName.replace(/ /g, "+");
-
-    //     This will show the following information about the song in your terminal/bash window
-    // Artist(s)
-    // The song’s name
-    // A preview link of the song from Spotify
-    // The album that the song is from
-
-
+    var twitter = require('twitter');
+    var client = new twitter(key.twitterKeys);
+    var screenName = { screen_name: 'Orabilis_' };
+    client.get('statuses/user_timeline', screenName, function(error, tweets, response) {
+        if (!error) {
+            for (var i = 0; i < tweets.length; i++) {
+                var date = tweets[i].created_at;
+                console.log("@Orabilis: " + tweets[i].text + " Created At: " + date.substring(0, 19));
+                console.log("-----------------------");
+            }
+        }
+        else {
+            console.log('Error occurred');
+        }
+    });
 }
 
 // Fetch a spotify song
@@ -53,8 +46,10 @@ function spotifyThisSong() {
     var Spotify = require('node-spotify-api');
 
     var spotify = new Spotify({
-        id: '7ee1079a57994de6beeac80fb83495d9',
-        secret: 'f9e7f3bfb2e248779c33a726961b8ea4'
+        // id: '7ee1079a57994de6beeac80fb83495d9',
+        // secret: 'f9e7f3bfb2e248779c33a726961b8ea4'
+        id: key.spotifyKeys.id,
+        secret: key.spotifyKeys.secret
     });
 
     var songName = process.argv[3];
@@ -145,3 +140,4 @@ function doWhatItSays() {
     });
 
 }
+runTime();
