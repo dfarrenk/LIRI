@@ -27,17 +27,18 @@ function myTweets() {
     var twitter = require('twitter');
     var client = new twitter(key.twitterKeys);
     var screenName = { screen_name: 'Orabilis_' };
-    client.get('statuses/user_timeline', screenName, function(error, tweets, response) {
-        if (!error) {
-            for (var i = 0; i < tweets.length; i++) {
-                var date = tweets[i].created_at;
-                console.log("@Orabilis: " + tweets[i].text + " Created At: " + date.substring(0, 19));
-                console.log("-----------------------");
-            }
+    // Default count is 20
+    client.get('statuses/user_timeline', screenName, function(err, tweets, response) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
         }
-        else {
-            console.log('Error occurred');
+
+        for (var i = 0; i < tweets.length; i++) {
+            var date = tweets[i].created_at;
+            console.log("@Orabilis: " + tweets[i].text + " Created At: " + date.substring(0, 19));
+            console.log("-----------------------");
         }
+
     });
 }
 
@@ -46,8 +47,6 @@ function spotifyThisSong() {
     var Spotify = require('node-spotify-api');
 
     var spotify = new Spotify({
-        // id: '7ee1079a57994de6beeac80fb83495d9',
-        // secret: 'f9e7f3bfb2e248779c33a726961b8ea4'
         id: key.spotifyKeys.id,
         secret: key.spotifyKeys.secret
     });
